@@ -275,26 +275,4 @@ resource "aws_eks_node_group" "general" {
   }
 }
 
-resource "null_resource" "import_k8s_lb_sg" {
-  provisioner "local-exec" {
-    command     = <<EOT
-# Detect the K8s LB security group
-SG_ID=$(aws ec2 describe-security-groups \
-  --filters "Name=tag:kubernetes.io/cluster/solar-system-application,Values=owned" \
-            "Name=description,Values='Security group for Kubernetes ELB*'" \
-  --query 'SecurityGroups[0].GroupId' --output text)
-
-# Import it into Terraform state if exists
-if [ "$SG_ID" != "None" ]; then
-  terraform import aws_security_group.k8s_lb_sg $SG_ID
-fi
-EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-
-  # Run only on destroy
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
 
