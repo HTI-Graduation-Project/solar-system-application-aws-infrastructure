@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "igw" {
 
   vpc_id = aws_vpc.main.id
 
-    tags = {
+  tags = {
     Name = "igw"
   }
 }
@@ -26,8 +26,8 @@ resource "aws_subnet" "public_AZ1" {
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                                                 = "public-${local.AZ1}"
-    "kubernetes.io/role/elb"                               = "1"
+    "Name"                                    = "public-${local.AZ1}"
+    "kubernetes.io/role/elb"                  = "1"
     "kubernetes.io/cluster/${local.eks_name}" = "owned"
   }
 
@@ -41,8 +41,8 @@ resource "aws_subnet" "public_AZ2" {
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                                                 = "public-${local.AZ2}"
-    "kubernetes.io/role/elb"                               = "1"
+    "Name"                                    = "public-${local.AZ2}"
+    "kubernetes.io/role/elb"                  = "1"
     "kubernetes.io/cluster/${local.eks_name}" = "owned"
   }
 
@@ -54,8 +54,8 @@ resource "aws_subnet" "private_AZ1" {
   cidr_block        = "10.0.64.0/19"
   availability_zone = local.AZ1
   tags = {
-    "Name"                                                 = "private-${local.AZ1}"
-    "kubernetes.io/role/internal-elb"                      = "1"
+    "Name"                                    = "private-${local.AZ1}"
+    "kubernetes.io/role/internal-elb"         = "1"
     "kubernetes.io/cluster/${local.eks_name}" = "owned"
 
   }
@@ -67,8 +67,8 @@ resource "aws_subnet" "private_AZ2" {
   cidr_block        = "10.0.96.0/19"
   availability_zone = local.AZ2
   tags = {
-    "Name"                                                 = "private-${local.AZ2}"
-    "kubernetes.io/role/internal-elb"                      = "1"
+    "Name"                                    = "private-${local.AZ2}"
+    "kubernetes.io/role/internal-elb"         = "1"
     "kubernetes.io/cluster/${local.eks_name}" = "owned"
   }
 
@@ -85,10 +85,10 @@ resource "aws_nat_gateway" "ngw" {
   depends_on = [aws_internet_gateway.igw]
 }
 resource "aws_eip" "eip" {
-  
+
   domain = "vpc"
 
-    tags = {
+  tags = {
     Name = "nat"
   }
 }
@@ -177,7 +177,7 @@ resource "aws_iam_role_policy_attachment" "eks" {
 }
 
 resource "aws_eks_cluster" "eks" {
-  name     = "${local.eks_name}"
+  name     = local.eks_name
   version  = local.eks_version
   role_arn = aws_iam_role.eks.arn
 
@@ -280,7 +280,7 @@ resource "aws_eks_node_group" "general" {
 
 resource "null_resource" "import_k8s_lb_sg" {
   provisioner "local-exec" {
-    command = <<EOT
+    command     = <<EOT
 # Detect the K8s LB security group
 SG_ID=$(aws ec2 describe-security-groups \
   --filters "Name=tag:kubernetes.io/cluster/solar-system-application,Values=owned" \
