@@ -72,18 +72,18 @@ resource "helm_release" "cluster_autoscaler" {
   namespace  = "kube-system"
   version    = "9.37.0"
 
-  set  =  [{
+  set = [{
     name  = "rbac.serviceAccount.name"
     value = "cluster-autoscaler"
-  },
-  {
-    name  = "awsRegion"
-    value = "us-east-1"
-  },
-  {
-    name  = "autoDiscovery.clusterName"
-    value = aws_eks_cluster.eks.name
-  }
+    },
+    {
+      name  = "awsRegion"
+      value = "us-east-1"
+    },
+    {
+      name  = "autoDiscovery.clusterName"
+      value = aws_eks_cluster.eks.name
+    }
   ]
   depends_on = [helm_release.metrics_server]
 }

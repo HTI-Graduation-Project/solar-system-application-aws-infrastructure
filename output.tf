@@ -6,10 +6,10 @@ output "basion_host_ec2_public_dns" {
   value = aws_instance.basion_host_ec2.public_dns
 }
 output "public_subnet_ids" {
-value = [
-  aws_subnet.public_AZ1.id,
-  aws_subnet.public_AZ2.id
-]
+  value = [
+    aws_subnet.public_AZ1.id,
+    aws_subnet.public_AZ2.id
+  ]
 }
 
 
