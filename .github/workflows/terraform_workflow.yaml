@@ -44,7 +44,7 @@ jobs:
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
       - name: check files
-        run: cat provides.tf
+        run: cat providers.tf
           
       - name: Terraform Init
         run: terraform init
