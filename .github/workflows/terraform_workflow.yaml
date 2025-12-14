@@ -63,7 +63,6 @@ jobs:
             path: tfplan
   terraform_apply:
     name: Terraform Apply
-    needs: [ terraform_plan ]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
