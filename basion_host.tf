@@ -54,3 +54,8 @@ resource "aws_instance" "basion_host_ec2" {
     Name = "basion_host"
   }
 }
+
+resource "aws_key_pair" "my_key" {
+  key_name   = "elnimr"
+  public_key = file("elnimr.pub")
+}
