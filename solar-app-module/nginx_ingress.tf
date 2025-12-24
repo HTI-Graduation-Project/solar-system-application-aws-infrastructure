@@ -7,6 +7,6 @@ resource "helm_release" "external_nginx" {
   create_namespace = true
   version          = "4.10.1"
 
-  values = [file("./values/ingress-values.yaml")]
+  values = [file("./solar-app-module/values/ingress-values.yaml")]
 
 }

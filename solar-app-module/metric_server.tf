@@ -6,7 +6,7 @@ resource "helm_release" "metrics_server" {
   namespace  = "kube-system"
   version    = "3.12.1"
 
-  values = [file("./values/metric-server.yaml")]
+  values = [file("./solar-app-module/values/metric-server.yaml")]
 
   depends_on = [aws_eks_node_group.general]
 }
