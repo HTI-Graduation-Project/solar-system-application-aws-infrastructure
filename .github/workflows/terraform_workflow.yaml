@@ -25,19 +25,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.5
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       
-      - name: Verify Terraform Token
-        run: |
-          # Check if the credentials file was actually created by the setup action
-          if [ -f "$HOME/.terraform.d/credentials.tfrc.json" ]; then
-            echo "✅ Credentials file exists."
-            # Check if it contains a token for app.terraform.io (without showing the token)
-            grep -q "app.terraform.io" $HOME/.terraform.d/credentials.tfrc.json && echo "✅ Token for app.terraform.io found."
-          else
-            echo "❌ Credentials file NOT found. setup-terraform might have failed."
-            exit 1
-          fi
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -61,7 +49,8 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-
+        env: 
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
         run: terraform fmt -check
