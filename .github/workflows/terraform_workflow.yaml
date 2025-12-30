@@ -26,18 +26,13 @@ jobs:
         with:
           terraform_version: 1.13.5
 
-      - name: Manually Create Credentials File
+      - name: Create Terraform Config File
         run: |
-          mkdir -p $HOME/.terraform.d
-          cat <<EOF > $HOME/.terraform.d/credentials.tfrc.json
-          {
-            "credentials": {
-              "app.terraform.io": {
-                "token": "${{ secrets.TF_API_TOKEN }}"
-              }
-            }
+          cat <<EOF > $HOME/.terraformrc
+          credentials "app.terraform.io" {
+            token = "${{ secrets.TF_API_TOKEN }}"
           }
-          EOF    
+          EOF   
 
 
       - name: Configure AWS Credentials
