@@ -25,15 +25,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.5
-
-      - name: Create Terraform Config File
-        run: |
-          cat <<EOF > $HOME/.terraformrc
-          credentials "app.terraform.io" {
-            token = "${{ secrets.TF_API_TOKEN }}"
-          }
-          EOF   
-
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -57,8 +49,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        env: 
-          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
         run: terraform fmt -check
