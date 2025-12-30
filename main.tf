@@ -3,7 +3,6 @@ module "solar-app-eks-module" {
   version = "1.0.1"
 }
 
-
 terraform {
   backend "s3" {
     bucket       = "solar-app-s3"

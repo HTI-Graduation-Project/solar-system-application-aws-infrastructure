@@ -21,9 +21,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+        
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
+        with:
+          terraform_version: 1.13.5
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -34,7 +37,7 @@ jobs:
 
       - name: Debug AWS identity
         run: aws sts get-caller-identity
-
+ 
       - name: Cache Terraform
         uses: actions/cache@v4
         with:
@@ -47,7 +50,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-
 
       - name: Terraform Format
         run: terraform fmt -check
@@ -74,6 +76,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.5
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
